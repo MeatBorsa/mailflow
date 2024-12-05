@@ -5,7 +5,7 @@ An automated system for processing meat trading emails using AI. The system moni
 ## Features
 
 ### Email Processing
-- Monitors Office 365 shared and usermailbox
+- Monitors Office 365 shared and user mailboxes
 - Processes emails from inbox only
 - Excludes already processed emails
 - Marks processed emails with a category
@@ -45,15 +45,15 @@ An automated system for processing meat trading emails using AI. The system moni
 
 3. Configure environment variables in `.env`:
 
-AZURE_CLIENT_ID=your_azure_client_id
-AZURE_CLIENT_SECRET=your_azure_client_secret
-AZURE_TENANT_ID=your_azure_tenant_id
-USER_EMAIL=your_email
-SHARED_MAILBOX=shared_mailbox_email
-OPENAI_API_KEY=your_openai_api_key
-EXCLUDED_SENDERS=comma,separated,email,addresses
-CLEAN_HTML=true
-EMAIL_PROCESSED_CATEGORY=Processed
+- `AZURE_CLIENT_ID`: your_azure_client_id
+- `AZURE_CLIENT_SECRET`: your_azure_client_secret 
+- `AZURE_TENANT_ID`: your_azure_tenant_id
+- `USER_EMAIL`: your_email
+- `SHARED_MAILBOX`: shared_mailbox_email
+- `OPENAI_API_KEY`: your_openai_api_key
+- `EXCLUDED_SENDERS`: comma,separated,email,addresses
+- `CLEAN_HTML`: true
+- `EMAIL_PROCESSED_CATEGORY`: Processed
 
 
 ## Architecture
