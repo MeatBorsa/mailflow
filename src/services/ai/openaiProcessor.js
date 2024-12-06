@@ -11,8 +11,7 @@ const SYSTEM_PROMPTS = {
 const USER_PROMPTS = {
     EMAIL_ANALYSIS: `
         Analyze this email to determine if the sender is buying or selling meat. 
-        If not specified, assume the sender is selling but only if the email contains meat related information. Otherwise, leave empty. 
-        If it cannot be determined, leave empty. 
+        Most of the time, the sender is selling, especially if the email contains price information. Leave empty if it cannot be determined.
         Extract the following information in JSON format:
         - sender object: { firstname, lastname, email, company, vat, address }
         - action: "buying" or "selling"
@@ -28,7 +27,7 @@ const USER_PROMPTS = {
         Email Subject: {subject}
         Email Content: {content}
         
-        Pair each offer with name, quantity, package, price, incoterms, currency. There should be one price per offer or per line. 
+        Important: Pair each offer with name, quantity, package, price, incoterms, currency. There should be one price per offer or per line. 
         Respond only with valid JSON. 
         Important: If the email is forwarded, process the original email only. You should then take the first name, last name, email and company from the original sender, but still process the file attachments.
         If the email contains multiple emails, process only the forwarded email.
