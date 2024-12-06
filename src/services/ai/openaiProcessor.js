@@ -11,6 +11,8 @@ const SYSTEM_PROMPTS = {
 const USER_PROMPTS = {
     EMAIL_ANALYSIS: `
         Analyze this email to determine if the sender is buying or selling meat. 
+        If not specified, assume the sender is selling but only if the email contains meat related information. Otherwise, leave empty. 
+        If it cannot be determined, leave empty. 
         Extract the following information in JSON format:
         - sender object: { firstname, lastname, email, company, vat, address }
         - action: "buying" or "selling"
