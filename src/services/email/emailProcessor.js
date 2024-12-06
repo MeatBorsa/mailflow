@@ -14,54 +14,106 @@ class EmailProcessor {
 
     async processEmailBatch() {
         try {
-            console.log('1. Fetching emails...');
             const emails = await this.emailChecker.fetchEmails();
             
             if (!emails || emails.length === 0) {
-                console.log('No emails to process');
-                return;
+                const emptyResult = {
+                    total_emails: 0,
+                    trading_emails: 0,
+                    meat_related_emails: 0,
+                    analyses: []
+                };
+                console.log('BATCH PROCESSING RESULT:', JSON.stringify(emptyResult, null, 2));
+                return emptyResult;
             }
-            
-            console.log(`Found ${emails.length} emails to process`);
+
+            const analyses = [];
+            let tradingEmailCount = 0;
+            let meatRelatedCount = 0;
 
             for (const email of emails) {
                 try {
-                    console.log('\n-------------------');
-                    console.log('Processing email:', email.subject);
-                    console.log('From:', email.from?.emailAddress?.address);
-                    console.log('Received:', new Date(email.receivedDateTime).toLocaleString());
-
-                    // Process email...
                     const analysis = await this.processEmail(email);
                     
-                    // Mark as processed
+                    const enrichedAnalysis = {
+                        ...analysis,
+                        email_metadata: {
+                            subject: email.subject,
+                            received_date: email.receivedDateTime,
+                            message_id: email.id
+                        }
+                    };
+
+                    if (analysis.action) {
+                        tradingEmailCount++;
+                    }
+
+                    if (analysis.meat_type && (
+                        Array.isArray(analysis.meat_type) ? 
+                        analysis.meat_type.length > 0 : 
+                        analysis.meat_type.trim() !== ''
+                    )) {
+                        meatRelatedCount++;
+                    }
+
+                    analyses.push(enrichedAnalysis);
                     await this.emailChecker.markAsProcessed(email.id);
-                    
-                    console.log('Analysis Results:', JSON.stringify(analysis, null, 2));
-                    console.log('Email marked as processed');
-                    console.log('-------------------\n');
 
                 } catch (emailError) {
-                    console.error('Error processing individual email:', emailError);
-                    continue;
+                    analyses.push({
+                        error: 'Failed to process email',
+                        details: emailError.message,
+                        email_metadata: {
+                            subject: email.subject,
+                            received_date: email.receivedDateTime,
+                            message_id: email.id
+                        }
+                    });
                 }
             }
+
+            const result = {
+                total_emails: emails.length,
+                trading_emails: tradingEmailCount,
+                meat_related_emails: meatRelatedCount,
+                summary: {
+                    has_trading_info: tradingEmailCount > 0,
+                    has_meat_products: meatRelatedCount > 0,
+                    processing_status: 'completed'
+                },
+                analyses: analyses
+            };
+
+            console.log('BATCH PROCESSING RESULT:', JSON.stringify(result, null, 2));
+            return result;
+
         } catch (error) {
-            console.error('Error in email processing batch:', error);
-            throw error;
+            const errorResult = {
+                error: 'Batch processing failed',
+                details: error.message,
+                total_emails: 0,
+                trading_emails: 0,
+                meat_related_emails: 0,
+                summary: {
+                    has_trading_info: false,
+                    has_meat_products: false,
+                    processing_status: 'failed'
+                },
+                analyses: []
+            };
+            console.log('BATCH PROCESSING ERROR:', JSON.stringify(errorResult, null, 2));
+            return errorResult;
         }
     }
 
     async processEmail(email) {
         // 2. Clean HTML content if needed
         if (this.cleanHtml && email.body?.contentType?.toLowerCase() === 'html') {
-            console.log('2. Cleaning HTML content...');
             email.body.content = HtmlCleaner.clean(email.body.content);
         }
 
         // 3. Process attachments if any
         if (email.attachments && email.attachments.length > 0) {
-            console.log('3. Processing attachments...');
             const attachmentTexts = await this.processAttachments(email.attachments);
             if (attachmentTexts.length > 0) {
                 email.body.content += '\n\nAttachment Contents:\n' + attachmentTexts.join('\n---\n');
@@ -69,7 +121,6 @@ class EmailProcessor {
         }
 
         // 4. Analyze with OpenAI
-        console.log('4. Analyzing with OpenAI...');
         return await this.openaiProcessor.processEmail(email);
     }
 
@@ -80,7 +131,6 @@ class EmailProcessor {
             try {
                 // Skip image files
                 if (attachment.contentType.toLowerCase().startsWith('image/')) {
-                    console.log(`Skipping image attachment: ${attachment.name}`);
                     continue;
                 }
 

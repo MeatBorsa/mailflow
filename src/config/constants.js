@@ -1,6 +1,6 @@
 module.exports = {
     POLLING_INTERVAL: 5 * 60 * 1000, // 5 minutes
-    MAX_EMAILS_PER_BATCH: 1,
+    MAX_EMAILS_PER_BATCH: 10,
     SUPPORTED_FILE_TYPES: {
         IMAGE: [
             'image/jpeg',

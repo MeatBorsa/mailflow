@@ -63,7 +63,13 @@ class EmailChecker {
                     categories: [config.processedCategory]
                 });
             
-            console.log(`Email marked as processed`);
+            // Get the email subject for logging
+            const email = await this.client.api(`/users/${config.sharedMailbox}/messages/${emailId}`)
+                .header('X-AnchorMailbox', config.userEmail)
+                .select('subject')
+                .get();
+            
+            console.log(`Email - [${email.subject}] - marked as processed`);
         } catch (error) {
             console.error('Error marking email as processed:', error);
             throw error;

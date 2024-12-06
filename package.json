@@ -1,5 +1,5 @@
 {
-  "name": "meat-processor",
+  "name": "mail-flow",
   "version": "1.0.0",
   "description": "Email processor for meat trading",
   "main": "src/app.js",
