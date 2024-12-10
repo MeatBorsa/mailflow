@@ -1,31 +1,11 @@
 module.exports = {
-    POLLING_INTERVAL: 5 * 60 * 1000, // 5 minutes
-    MAX_EMAILS_PER_BATCH: 3,
+    POLLING_INTERVAL: 60000, // 1 minute in milliseconds
     SUPPORTED_FILE_TYPES: {
-        IMAGE: [
-            'image/jpeg',
-            'image/png',
-            'image/gif',
-            'image/webp',
-            'image/bmp'
-        ],
-        TEXT: [
-            'text/plain',
-            'text/csv',
-            'text/html',
-            'application/json',
-            'application/xml'
-        ],
-        DOCUMENT: {
-            PDF: ['application/pdf'],
-            WORD: [
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            ],
-            EXCEL: [
-                'application/vnd.ms-excel',
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            ]
-        }
+        'application/pdf': '.pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+        'application/msword': '.doc',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.ms-excel': '.xls'
     },
+    MAX_FILE_SIZE: 10 * 1024 * 1024 // 10MB in bytes
 }; 

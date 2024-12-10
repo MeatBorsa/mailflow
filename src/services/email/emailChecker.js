@@ -28,7 +28,7 @@ class EmailChecker {
             const response = await this.client.api('/users/' + config.sharedMailbox + '/mailFolders/inbox/messages')
                 .header('X-AnchorMailbox', config.userEmail)
                 .filter(`not(categories/any(c:c eq '${config.processedCategory}'))`)
-                .top(constants.MAX_EMAILS_PER_BATCH)
+                .top(config.maxEmailsPerBatch)
                 .orderby('receivedDateTime desc')
                 .select('id,subject,from,body,receivedDateTime,hasAttachments,categories')
                 .expand('attachments')
