@@ -9,5 +9,6 @@ module.exports = {
     openaiApiKey: process.env.OPENAI_API_KEY,
     excludedSenders: (process.env.EXCLUDED_SENDERS || '').split(',').map(email => email.trim().toLowerCase()),
     cleanHtml: process.env.CLEAN_HTML !== 'false',
-    processedCategory: process.env.EMAIL_PROCESSED_CATEGORY || 'Processed'
+    processedCategory: process.env.EMAIL_PROCESSED_CATEGORY || 'Processed',
+    maxEmailsPerBatch: parseInt(process.env.MAX_EMAILS_PER_BATCH, 10) || 3
 }; 

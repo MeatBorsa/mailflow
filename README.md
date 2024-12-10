@@ -54,6 +54,7 @@ An automated system for processing meat trading emails using AI. The system moni
 - `EXCLUDED_SENDERS`: comma,separated,email,addresses
 - `CLEAN_HTML`: true
 - `EMAIL_PROCESSED_CATEGORY`: Processed
+- `MAX_EMAILS_PER_BATCH`: 3  # Maximum number of emails to process in each batch
 
 
 ## Architecture
