@@ -45,17 +45,35 @@ An automated system for processing meat trading emails using AI. The system moni
 
 3. Configure environment variables in `.env`:
 
+### Azure Configuration
 - `AZURE_CLIENT_ID`: your_azure_client_id
 - `AZURE_CLIENT_SECRET`: your_azure_client_secret 
 - `AZURE_TENANT_ID`: your_azure_tenant_id
 - `USER_EMAIL`: your_email
 - `SHARED_MAILBOX`: shared_mailbox_email
+
+### OpenAI Configuration
 - `OPENAI_API_KEY`: your_openai_api_key
+
+### Email Processing Configuration
 - `EXCLUDED_SENDERS`: comma,separated,email,addresses
 - `CLEAN_HTML`: true
 - `EMAIL_PROCESSED_CATEGORY`: Processed
 - `MAX_EMAILS_PER_BATCH`: 3  # Maximum number of emails to process in each batch
+- `PROCESS_EMAILS_AFTER`: 2024-01-01  # Process emails received after this date (YYYY-MM-DD format)
 
+### Environment Variables Description:
+- `AZURE_CLIENT_ID`: Azure AD application client ID
+- `AZURE_CLIENT_SECRET`: Azure AD application client secret
+- `AZURE_TENANT_ID`: Azure AD tenant ID
+- `USER_EMAIL`: Email address of the user accessing the mailbox
+- `SHARED_MAILBOX`: Email address of the shared mailbox to monitor
+- `OPENAI_API_KEY`: OpenAI API key for email analysis
+- `EXCLUDED_SENDERS`: List of email addresses to ignore
+- `CLEAN_HTML`: Whether to clean HTML content (true/false)
+- `EMAIL_PROCESSED_CATEGORY`: Category name for processed emails
+- `MAX_EMAILS_PER_BATCH`: Number of emails to process in each batch
+- `PROCESS_EMAILS_AFTER`: Only process emails received after this date (YYYY-MM-DD)
 
 ## Architecture
 

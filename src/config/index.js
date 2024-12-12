@@ -10,5 +10,6 @@ module.exports = {
     excludedSenders: (process.env.EXCLUDED_SENDERS || '').split(',').map(email => email.trim().toLowerCase()),
     cleanHtml: process.env.CLEAN_HTML !== 'false',
     processedCategory: process.env.EMAIL_PROCESSED_CATEGORY || 'Processed',
-    maxEmailsPerBatch: parseInt(process.env.MAX_EMAILS_PER_BATCH, 10) || 3
+    maxEmailsPerBatch: parseInt(process.env.MAX_EMAILS_PER_BATCH, 10) || 3,
+    processEmailsAfter: process.env.PROCESS_EMAILS_AFTER || '2024-01-01'
 }; 
