@@ -25,9 +25,14 @@ class EmailChecker {
 
     async fetchEmails() {
         try {
+            // Create date filter
+            const dateFilter = `receivedDateTime ge ${config.processEmailsAfter}T00:00:00Z`;
+            const categoryFilter = `not(categories/any(c:c eq '${config.processedCategory}'))`;
+            const combinedFilter = `${dateFilter} and ${categoryFilter}`;
+
             const response = await this.client.api('/users/' + config.sharedMailbox + '/mailFolders/inbox/messages')
                 .header('X-AnchorMailbox', config.userEmail)
-                .filter(`not(categories/any(c:c eq '${config.processedCategory}'))`)
+                .filter(combinedFilter)
                 .top(config.maxEmailsPerBatch)
                 .orderby('receivedDateTime desc')
                 .select('id,subject,from,body,receivedDateTime,hasAttachments,categories')
